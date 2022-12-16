@@ -74,7 +74,14 @@ entangled add-genesis-account $KEY 50000000000000000000000000aENTGL --keyring-ba
 entangled add-genesis-account $KEY2 50000000000000000000000000aENTGL --keyring-backend $KEYRING
 
 # Sign genesis transaction
-entangled gentx $KEY 1000000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
+# entangled gentx $KEY 1000000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
+entangled gentx $KEY 230000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
+
+entangled add-genesis-admin $KEY
+entangled add-genesis-admin $KEY2
+
+entangled add-genesis-distributor $KEY 45600000000000000
+entangled add-genesis-distributor $KEY2 1230000000000000
 
 # Collect genesis tx
 entangled collect-gentxs
