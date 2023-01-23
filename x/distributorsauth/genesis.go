@@ -1,8 +1,6 @@
 package distributorsauth
 
 import (
-	"fmt"
-
 	"github.com/Entangle-Protocol/entangle-blockchain/x/distributorsauth/keeper"
 	"github.com/Entangle-Protocol/entangle-blockchain/x/distributorsauth/types"
 
@@ -13,7 +11,6 @@ import (
 
 // InitGenesis initializes the module's state from a provided genesis state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, accountKeeper types.AccountKeeper, genState types.GenesisState) {
-	fmt.Println("func InitGenesis")
 	for _, admin := range genState.Admins {
 		k.AddAdmin(ctx, admin)
 	}
@@ -24,7 +21,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, accountKeeper types.AccountKe
 
 // ExportGenesis returns the module's exported genesis
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
-	fmt.Println("ExportGenesis")
 	var admins []types.Admin
 	k.IterateAdmins(ctx, func(address string, editOptions bool) bool {
 		admin := types.Admin{

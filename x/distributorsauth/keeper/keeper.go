@@ -35,8 +35,6 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	at types.AccountKeeper,
 ) *Keeper {
-	fmt.Println("NewKeeper")
-
 	return &Keeper{
 		cdc:        cdc,
 		storeKey:   storeKey,

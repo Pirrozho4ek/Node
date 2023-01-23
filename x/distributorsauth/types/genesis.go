@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	fmt "fmt"
 	"sort"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -18,7 +17,6 @@ const DefaultIndex uint64 = 1
 
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
-	fmt.Println("DefaultGenesis")
 	return &GenesisState{
 		Admins:       []Admin{},
 		Distributors: []DistributorInfo{},
@@ -27,7 +25,6 @@ func DefaultGenesis() *GenesisState {
 
 // NewGenesisState creates a new genesis state.
 func NewGenesisState(admins []Admin, distributors []DistributorInfo) *GenesisState {
-	fmt.Println("NewGenesisState")
 	return &GenesisState{
 		Admins:       admins,
 		Distributors: distributors,
