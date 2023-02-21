@@ -1,8 +1,6 @@
 package types
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -10,9 +8,6 @@ import (
 var _ sdk.Msg = &MsgAddAdmin{}
 
 func NewMsgAddAdmin(sender sdk.AccAddress, address string, editOption bool) *MsgAddAdmin {
-	fmt.Println(sender.String())
-	fmt.Println(address)
-	fmt.Println(editOption)
 	return &MsgAddAdmin{
 		Sender:       sender.String(),
 		AdminAddress: address,

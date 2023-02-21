@@ -1,7 +1,6 @@
 package distributorsauth
 
 import (
-	"fmt"
 	"math/rand"
 
 	"github.com/Entangle-Protocol/entangle-blockchain/testutil/sample"
@@ -31,7 +30,6 @@ const (
 
 // GenerateGenesisState creates a randomized GenState of the module
 func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
-	fmt.Println("GenerateGenesisState")
 	admins := make([]types.Admin, len(simState.Accounts))
 	for i, acc := range simState.Accounts {
 		admins[i] = types.Admin{

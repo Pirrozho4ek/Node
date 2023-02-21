@@ -112,7 +112,6 @@ func CmdAddAdmin() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsAddress := string(args[0])
 
-			fmt.Println(argsAddress)
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err

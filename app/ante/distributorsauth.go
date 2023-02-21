@@ -1,8 +1,6 @@
 package ante
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -17,14 +15,12 @@ type DistributorsAuthDecorator struct {
 func NewDistributorsAuthDecorator(
 	distrKeeper DistributorsAuthKeeper,
 ) DistributorsAuthDecorator {
-	fmt.Println("DistributorsAuthDecorator")
 	return DistributorsAuthDecorator{
 		distrKeeper,
 	}
 }
 
 func (dg DistributorsAuthDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Context, err error) {
-	fmt.Println("AnteHandle")
 	for _, msg := range tx.GetMsgs() {
 		// ethMsg, ok := msg.(*evmtypes.MsgEthereumTx)
 		// if !ok {
