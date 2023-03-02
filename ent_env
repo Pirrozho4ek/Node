@@ -1,0 +1,9 @@
+KEY="mykey"
+KEY2="mykey2"
+CHAINID="ethermint_9000-1"
+MONIKER="localtestnet"
+KEYRING="test"
+KEYALGO="eth_secp256k1"
+LOGLEVEL="info"
+# to trace evm
+TRACE="--trace"
