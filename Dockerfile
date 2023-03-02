@@ -10,6 +10,10 @@ WORKDIR /go/src/github.com/Entangle-Protocol/entangle-blockchain
 RUN apk add --update $PACKAGES
 RUN apk add linux-headers
 
+RUN apk add go
+RUN apk add make
+
+
 # Add source files
 COPY . .
 
@@ -27,4 +31,10 @@ WORKDIR /
 COPY --from=build-env /go/src/github.com/Entangle-Protocol/entangle-blockchain/build/entangled /usr/bin/entangled
 
 # Run entangled by default
-CMD ["entangled"]
+# CMD ["entangled"]
+
+COPY ./init.sh /
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]
+CMD ["true"]
+
