@@ -1,15 +1,17 @@
 #!/bin/sh
 
-KEY="mykey"
-KEY2="mykey2"
-CHAINID="ethermint_9000-1"
-MONIKER="localtestnet"
-KEYRING="test"
-KEYALGO="eth_secp256k1"
-LOGLEVEL="info"
-# to trace evm
-TRACE="--trace"
-# TRACE=""
+# KEY="mykey"
+# KEY2="mykey2"
+# CHAINID="ethermint_9000-1"
+# MONIKER="localtestnet"
+# KEYRING="file"
+# KEYALGO="eth_secp256k1"
+# LOGLEVEL="info"
+# # to trace evm
+# TRACE="--trace"
+# # TRACE=""
+
+source ent_env
 
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
@@ -23,8 +25,9 @@ entangled config keyring-backend $KEYRING
 entangled config chain-id $CHAINID
 
 # if $KEY exists it should be deleted
-entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
-entangled keys add $KEY2 --keyring-backend $KEYRING --algo $KEYALGO
+yes "entangle" | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+yes "entangle" | entangled keys add $KEY2 --keyring-backend $KEYRING --algo $KEYALGO
+yes "entangle" | entangled keys add $KEY3 --keyring-backend $KEYRING --algo $KEYALGO
 
 # Set moniker and chain-id for Entangle (Moniker can be anything, chain-id must be an integer)
 entangled init $MONIKER --chain-id $CHAINID
@@ -70,18 +73,20 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-entangled add-genesis-account $KEY 50000000000000000000000000aENTGL --keyring-backend $KEYRING
-entangled add-genesis-account $KEY2 50000000000000000000000000aENTGL --keyring-backend $KEYRING
+yes "entangle" | entangled add-genesis-account $KEY  25000000000000000000000000aENTGL --keyring-backend $KEYRING
+yes "entangle" | entangled add-genesis-account $KEY2 50000000000000000000000000aENTGL --keyring-backend $KEYRING
+yes "entangle" | entangled add-genesis-account $KEY3 25000000000000000000000000aENTGL --keyring-backend $KEYRING
 
 # Sign genesis transaction
 # entangled gentx $KEY 1000000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
-entangled gentx $KEY 230000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
+yes "entangle" | entangled gentx $KEY 230000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
+# yes "entangle" | entangled gentx $KEY2 170000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
 
-entangled add-genesis-admin $KEY
-entangled add-genesis-admin $KEY2
+yes "entangle" | entangled add-genesis-admin $KEY
+# yes "entangle" | entangled add-genesis-admin $KEY2
 
-entangled add-genesis-distributor $KEY 45600000000000000
-entangled add-genesis-distributor $KEY2 1230000000000000
+yes "entangle" | entangled add-genesis-distributor $KEY 45600000000000000
+# yes "entangle" | entangled add-genesis-distributor $KEY2 1230000000000000
 
 # Collect genesis tx
 entangled collect-gentxs
@@ -94,4 +99,23 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
+# entangled start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aENTGL --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
+
+echo NODEIDNODEID
+echo $(entangled tendermint show-node-id)
+
 entangled start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aENTGL --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
+
+entangled tx staking create-validator \
+  --amount=170000000000000000000aENTGL \
+  --pubkey=$(entangled tendermint show-validator) \
+  --moniker="validator2" \
+  --chain-id=<chain_id> \
+  --commission-rate="0.10" \
+  --commission-max-rate="0.20" \
+  --commission-max-change-rate="0.01" \
+  --min-self-delegation="1" \
+  --gas="auto" \
+  --gas-prices="0.025uatom" \
+  --from=$KEY2
+

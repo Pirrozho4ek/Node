@@ -33,8 +33,16 @@ COPY --from=build-env /go/src/github.com/Entangle-Protocol/entangle-blockchain/b
 # Run entangled by default
 # CMD ["entangled"]
 
-COPY ./init.sh /
-RUN chmod +x /init.sh
-ENTRYPOINT ["/init.sh"]
+# COPY ./init.sh /
+# RUN chmod +x /init.sh
+# ENTRYPOINT ["/init.sh"]
+# CMD ["true"]
+
+COPY ./init_key.sh /
+RUN chmod +x /init_key.sh
+ENTRYPOINT ["/init_key.sh"]
 CMD ["true"]
+
+COPY --from=build-env $HOME/.entangled/keyring-file/validator_key.info /
+
 

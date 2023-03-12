@@ -1,8 +1,10 @@
-KEY="mykey"
-KEY2="mykey2"
-CHAINID="ethermint_9000-1"
-MONIKER="localtestnet"
-KEYRING="test"
+KEY="validator_initial"
+KEY2="validator_2"
+KEY3="validator_3"
+
+CHAINID="entangle_9777-1"
+MONIKER="validator_1"
+KEYRING="file"
 KEYALGO="eth_secp256k1"
 LOGLEVEL="info"
 # to trace evm
