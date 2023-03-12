@@ -9,6 +9,14 @@ else
 fi
 eval $RESULT
 
+PROXYAPP="s/proxy_app = \"tcp:\/\/127.0.0.1:26658\"/proxy_app = \"tcp:\/\/"$IP":26658\"/g"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  RESULT="sed -i '' '$PROXYAPP' $HOME/.entangled/config/config.toml"
+else
+  RESULT="sed -i '$PROXYAPP' $HOME/.entangled/config/config.toml"
+fi
+eval $RESULT
+
 NODESTRING="s/node = \"tcp:\/\/localhost:26657\"/node = \"tcp:\/\/"$IP":26657\"/g"
 if [[ "$OSTYPE" == "darwin"* ]]; then
   RESULT="sed -i '' '$NODESTRING' $HOME/.entangled/config/client.toml"
