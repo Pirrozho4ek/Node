@@ -11,3 +11,5 @@ LOGLEVEL="info"
 TRACE="--trace"
 
 BRANCH=$(git symbolic-ref --short HEAD)
+BASEDIR=$(dirname "$0")
+SCRIPTS="$BASEDIR/scripts"
