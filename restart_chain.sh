@@ -23,7 +23,7 @@ cp $HOME/.entangled/config/genesis.json $HOME/Documents/gh/Node/genesis.json
 
 git add --all
 git commit -a -m "restart chain"
-git push origin $BRANCH 
+git push new $BRANCH 
 
 # add seed
 ./add_seed.sh $IP_ADDRESS

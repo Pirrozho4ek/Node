@@ -21,4 +21,4 @@ truncate --size -1 env_seeds
 
 git add --all
 git commit -a -m "add seed $IP_ADDRESS"
-git push origin $BRANCH
+git push $REMOTE_REPO $BRANCH

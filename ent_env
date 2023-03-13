@@ -11,3 +11,4 @@ LOGLEVEL="info"
 TRACE="--trace"
 
 BRANCH=$(git symbolic-ref --short HEAD)
+REMOTE_REPO="new"
