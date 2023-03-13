@@ -13,6 +13,9 @@
 
 source ent_env
 
+IP_ADDRESS=$1
+NEED_P2P_CONFIG=$2
+
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
 
@@ -94,15 +97,23 @@ entangled collect-gentxs
 # Run this to ensure everything worked and that the genesis file is setup correctly
 entangled validate-genesis
 
-if [[ $1 == "pending" ]]; then
-  echo "pending mode is on, please wait for the first block committed."
+# if [[ $1 == "pending" ]]; then
+#   echo "pending mode is on, please wait for the first block committed."
+# fi
+
+if [[ $IP_ADDRESS != "" ]]; then
+  echo ip to restart $IP_ADDRESS
+  # restart chain
+  ./restart_chain.sh $IP_ADDRESS
+
+  # p2p config
+  if [[ $NEED_P2P_CONFIG == "true" ]]; then
+    ./p2p_config.sh $IP_ADDRESS
+  fi
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
 # entangled start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aENTGL --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
-
-echo NODEIDNODEID
-echo $(entangled tendermint show-node-id)
 
 entangled start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aENTGL --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
 

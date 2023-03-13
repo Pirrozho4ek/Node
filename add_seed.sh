@@ -20,5 +20,5 @@ echo $NEWSEED >> env_seeds
 truncate --size -1 env_seeds
 
 git add --all
-git commit -a -m "add"
-git push origin node_testing
+git commit -a -m "add seed $IP_ADDRESS"
+git push origin $BRANCH
