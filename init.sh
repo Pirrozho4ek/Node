@@ -13,8 +13,9 @@
 
 source ent_env
 
-IP_ADDRESS=$1
-NEED_P2P_CONFIG=$2
+PASSWORD=$1
+IP_ADDRESS=$2
+NEED_P2P_CONFIG=$3
 
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
@@ -28,9 +29,9 @@ entangled config keyring-backend $KEYRING
 entangled config chain-id $CHAINID
 
 # if $KEY exists it should be deleted
-yes "entangle" | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
-yes "entangle" | entangled keys add $KEY2 --keyring-backend $KEYRING --algo $KEYALGO
-yes "entangle" | entangled keys add $KEY3 --keyring-backend $KEYRING --algo $KEYALGO
+yes $PASSWORD | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+yes $PASSWORD | entangled keys add $KEY2 --keyring-backend $KEYRING --algo $KEYALGO
+yes $PASSWORD | entangled keys add $KEY3 --keyring-backend $KEYRING --algo $KEYALGO
 
 # Set moniker and chain-id for Entangle (Moniker can be anything, chain-id must be an integer)
 entangled init $MONIKER --chain-id $CHAINID
@@ -76,19 +77,19 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Allocate genesis accounts (cosmos formatted addresses)
-yes "entangle" | entangled add-genesis-account $KEY  25000000000000000000000000aENTGL --keyring-backend $KEYRING
-yes "entangle" | entangled add-genesis-account $KEY2 50000000000000000000000000aENTGL --keyring-backend $KEYRING
-yes "entangle" | entangled add-genesis-account $KEY3 25000000000000000000000000aENTGL --keyring-backend $KEYRING
+yes $PASSWORD | entangled add-genesis-account $KEY  25000000000000000000000000aENTGL --keyring-backend $KEYRING
+yes $PASSWORD | entangled add-genesis-account $KEY2 50000000000000000000000000aENTGL --keyring-backend $KEYRING
+yes $PASSWORD| entangled add-genesis-account $KEY3 25000000000000000000000000aENTGL --keyring-backend $KEYRING
 
 # Sign genesis transaction
 # entangled gentx $KEY 1000000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
-yes "entangle" | entangled gentx $KEY 230000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
+yes $PASSWORD| entangled gentx $KEY 230000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
 # yes "entangle" | entangled gentx $KEY2 170000000000000000000aENTGL --keyring-backend $KEYRING --chain-id $CHAINID
 
-yes "entangle" | entangled add-genesis-admin $KEY
+yes $PASSWORD | entangled add-genesis-admin $KEY
 # yes "entangle" | entangled add-genesis-admin $KEY2
 
-yes "entangle" | entangled add-genesis-distributor $KEY 45600000000000000
+yes $PASSWORD | entangled add-genesis-distributor $KEY 45600000000000000
 # yes "entangle" | entangled add-genesis-distributor $KEY2 1230000000000000
 
 # Collect genesis tx

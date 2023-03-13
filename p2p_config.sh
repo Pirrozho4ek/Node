@@ -1,6 +1,9 @@
 #!/bin/bash
 
 IP=$1
+
+echo p2p_config with $IP
+
 LADDRSTRING="s/laddr = \"tcp:\/\/0.0.0.0:26656\"/laddr = \"tcp:\/\/"$IP":26656\"/g"
 if [[ "$OSTYPE" == "darwin"* ]]; then
   RESULT="sed -i '' '$LADDRSTRING' $HOME/.entangled/config/config.toml"

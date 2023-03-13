@@ -23,8 +23,8 @@ yes "entangle" | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYA
 entangled init $MONIKER --chain-id $CHAINID
 
 if [[ $IP_ADDRESS != "" ]]; then
-    # add seed
-    ./add_seed.sh $IP_ADDRESS
+    # # add seed
+    # ./add_seed.sh $IP_ADDRESS
 
     # p2p config
     if [[ $NEED_P2P_CONFIG == "true" ]]; then
