@@ -13,6 +13,8 @@ RUN apk add linux-headers
 RUN apk add go
 RUN apk add make
 
+# ARG key_password
+# ARG ip_address
 
 # Add source files
 COPY . .
@@ -38,11 +40,17 @@ COPY --from=build-env /go/src/github.com/Entangle-Protocol/entangle-blockchain/b
 # ENTRYPOINT ["/init.sh"]
 # CMD ["true"]
 
-COPY ./init_key.sh /
-RUN chmod +x /init_key.sh
-ENTRYPOINT ["/init_key.sh"]
-CMD ["true"]
+COPY ./init_validator.sh /
+COPY ./ent_env /
+COPY ./restart_chain.sh /
+COPY ./p2p_config.sh /
+COPY ./add_seed.sh /
+COPY ./genesis.json /
+COPY ./env_seeds /
+COPY ./init_seeds.sh /
 
-COPY --from=build-env $HOME/.entangled/keyring-file/validator_key.info /
+RUN chmod +x /init_validator.sh
+ENTRYPOINT ["/init_validator.sh"]
+# CMD [key_password, ip_address]
 
 

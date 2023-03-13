@@ -2,22 +2,26 @@
 
 source ent_env
 
-IP_ADDRESS=$1
-NEED_P2P_CONFIG=$2
+PASSWORD=$1
+IP_ADDRESS=$2
+NEED_P2P_CONFIG=$3
+REMOVE_AND_MAKE=$4
 
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
 
-# remove existing daemon and client
-rm -rf ~/.entangled*
+if [[ $REMOVE_AND_MAKE == "true" ]]; then
+    # remove existing daemon and client
+    rm -rf ~/.entangled*
 
-make install
+    make install
+fi
 
 entangled config keyring-backend $KEYRING
 entangled config chain-id $CHAINID
 
 # if $KEY exists it should be deleted
-yes "entangle" | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+yes $PASSWORD | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
 
 # Set moniker and chain-id for Entangle (Moniker can be anything, chain-id must be an integer)
 entangled init $MONIKER --chain-id $CHAINID
@@ -32,7 +36,10 @@ if [[ $IP_ADDRESS != "" ]]; then
     fi
 fi
 
+./init_seeds.sh
+
 cp genesis.json $HOME/.entangled/config/
+
 entangled start  --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aENTGL --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
 
 
