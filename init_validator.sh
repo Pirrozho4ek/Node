@@ -2,6 +2,9 @@
 
 source ent_env
 
+IP_ADDRESS=$1
+NEED_P2P_CONFIG=$2
+
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
 
@@ -14,12 +17,20 @@ entangled config keyring-backend $KEYRING
 entangled config chain-id $CHAINID
 
 # if $KEY exists it should be deleted
-entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+yes "entangle" | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
 
 # Set moniker and chain-id for Entangle (Moniker can be anything, chain-id must be an integer)
 entangled init $MONIKER --chain-id $CHAINID
 
-./init_seeds.sh
+if [[ $IP_ADDRESS != "" ]]; then
+    # add seed
+    ./add_seed.sh $IP_ADDRESS
+
+    # p2p config
+    if [[ $NEED_P2P_CONFIG == "true" ]]; then
+        ./p2p_config.sh $IP_ADDRESS
+    fi
+fi
 
 cp genesis.json $HOME/.entangled/config/
 entangled start  --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aENTGL --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
