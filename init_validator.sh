@@ -5,7 +5,8 @@ source ent_env
 PASSWORD=$1
 IP_ADDRESS=$2
 NEED_P2P_CONFIG=$3
-REMOVE_AND_MAKE=$4
+USE_KEY=$4
+REMOVE_AND_MAKE=$5
 
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
@@ -20,8 +21,12 @@ fi
 entangled config keyring-backend $KEYRING
 entangled config chain-id $CHAINID
 
-# if $KEY exists it should be deleted
-yes $PASSWORD | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+if [[ $USE_KEY == "true" ]]; then
+    yes $PASSWORD | entangled keys add test --keyring-backend $KEYRING --algo $KEYALGO
+    cp keys/validator_key.info $HOME/.entangled/keyring-file/
+else
+    yes $PASSWORD | entangled keys add $KEY --keyring-backend $KEYRING --algo $KEYALGO
+fi
 
 # Set moniker and chain-id for Entangle (Moniker can be anything, chain-id must be an integer)
 entangled init $MONIKER --chain-id $CHAINID

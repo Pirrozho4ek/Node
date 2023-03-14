@@ -19,6 +19,6 @@ NEWSEED=$NODEID@$1:26656
 echo $NEWSEED >> env_seeds
 truncate --size -1 env_seeds
 
-git add --all
-git commit -a -m "add seed $IP_ADDRESS"
-git push $REMOTE_REPO $BRANCH
+# git add --all
+# git commit -a -m "add seed $IP_ADDRESS"
+# git push $REMOTE_REPO $BRANCH

@@ -14,7 +14,13 @@ RUN apk add go
 RUN apk add make
 
 # ARG key_password
-# ARG ip_address
+ARG key_path=./keys
+
+RUN echo key path $key_path
+RUN echo ${key_path}
+RUN echo COPY ${key_path} /
+
+# RUN if [[ -n "$key_path" ]] ; then COPY ./$key_path /; fi
 
 # Add source files
 COPY . .
@@ -32,6 +38,8 @@ WORKDIR /
 # Copy over binaries from the build-env
 COPY --from=build-env /go/src/github.com/Entangle-Protocol/entangle-blockchain/build/entangled /usr/bin/entangled
 
+# RUN yes key_password | entangled keys add validator_key --keyring-backend file --algo eth_secp256k1 
+
 # Run entangled by default
 # CMD ["entangled"]
 
@@ -48,6 +56,10 @@ COPY ./add_seed.sh /
 COPY ./genesis.json /
 COPY ./env_seeds /
 COPY ./init_seeds.sh /
+
+RUN echo key path $key_path
+RUN echo ${key_path}
+COPY ${key_path} /
 
 RUN chmod +x /init_validator.sh
 ENTRYPOINT ["/init_validator.sh"]
