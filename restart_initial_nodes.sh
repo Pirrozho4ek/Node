@@ -1,16 +1,19 @@
 #!/bin/bash
 
-CONTAINER_NAME=validator_node
+source ent_env
+
+CONTAINER=validator_node
+# \$(docker ps -q)
 
 INITIAL_HOST="ubuntu@ec2-34-239-248-230.compute-1.amazonaws.com"
 INITIAL_IP=34.239.248.230
-INITIAL_SCRIPT="docker stop \$(docker ps -q); \
+INITIAL_SCRIPT="docker stop $VALIDATOR_CONTAINER_NAME; \
         cd Node; \
         git pull; \
         ./start_initial_container.sh entangle $INITIAL_IP; \
         sleep 10; \
-        sudo docker cp \$(docker ps -q):/genesis.json \$HOME/genesis.json; \
-        sudo docker cp \$(docker ps -q):/env_seeds \$HOME/env_seeds"
+        sudo docker cp $VALIDATOR_CONTAINER_NAME:/genesis.json \$HOME/genesis.json; \
+        sudo docker cp $VALIDATOR_CONTAINER_NAME:/env_seeds \$HOME/env_seeds"
 
 ssh -i "entangle.pem" ${INITIAL_HOST} "${INITIAL_SCRIPT}"
 

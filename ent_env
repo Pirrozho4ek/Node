@@ -12,3 +12,5 @@ TRACE="--trace"
 
 BRANCH=$(git symbolic-ref --short HEAD)
 REMOTE_REPO="new"
+
+VALIDATOR_CONTAINER_NAME="validator_container"
