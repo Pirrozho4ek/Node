@@ -49,6 +49,8 @@ COPY --from=build-env /go/src/github.com/Entangle-Protocol/entangle-blockchain/b
 # CMD ["true"]
 
 COPY ./init_validator.sh /
+COPY ./init_validator_secondary.sh /
+COPY ./init_validator_secondary2.sh /
 COPY ./ent_env /
 COPY ./restart_chain.sh /
 COPY ./p2p_config.sh /
