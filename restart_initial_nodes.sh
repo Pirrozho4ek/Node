@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CONTAINER_NAME=validator_node
+
 INITIAL_HOST="ubuntu@ec2-34-239-248-230.compute-1.amazonaws.com"
 INITIAL_IP=34.239.248.230
 INITIAL_SCRIPT="docker stop \$(docker ps -q); \
