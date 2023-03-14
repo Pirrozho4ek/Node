@@ -14,3 +14,4 @@ BRANCH=$(git symbolic-ref --short HEAD)
 REMOTE_REPO="new"
 
 VALIDATOR_CONTAINER_NAME="validator_container"
+REPO_FOLDER_NAME=Node
