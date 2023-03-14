@@ -5,11 +5,9 @@ if [ "$1" != "" ]; then
     echo "Received: ${1}" && shift;
 fi
 
-echo secondary params "$@"
-
 if [ $BUILD_TYPE == "init" ]; then
     echo build type INIT 
-    ./init_start.sh "$@"
+    ./init_chain.sh "$@"
 fi
 
 if [ $BUILD_TYPE == "validator" ]; then

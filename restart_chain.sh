@@ -18,7 +18,7 @@ echo restart chain
 rm -rf env_seeds
 touch env_seeds
 
-cp $HOME/.entangled/config/genesis.json $HOME/Documents/gh/Node/genesis.json
+cp $HOME/.entangled/config/genesis.json ./genesis.json
 
 
 # git add --all

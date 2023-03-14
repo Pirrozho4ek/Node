@@ -1,29 +1,22 @@
 #!/bin/sh
 
-# KEY="mykey"
-# KEY2="mykey2"
-# CHAINID="ethermint_9000-1"
-# MONIKER="localtestnet"
-# KEYRING="file"
-# KEYALGO="eth_secp256k1"
-# LOGLEVEL="info"
-# # to trace evm
-# TRACE="--trace"
-# # TRACE=""
-
 source ent_env
 
 PASSWORD=$1
 IP_ADDRESS=$2
 NEED_P2P_CONFIG=$3
+USE_KEY=$4
+REMOVE_AND_MAKE=$5
 
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
 
-# remove existing daemon and client
-rm -rf ~/.entangled*
+if [[ $REMOVE_AND_MAKE == "true" ]]; then
+  # remove existing daemon and client
+  rm -rf ~/.entangled*
 
-make install
+  make install
+fi
 
 entangled config keyring-backend $KEYRING
 entangled config chain-id $CHAINID
@@ -107,11 +100,15 @@ if [[ $IP_ADDRESS != "" ]]; then
   # restart chain
   ./restart_chain.sh $IP_ADDRESS
 
+  # add seed
+  # ./add_seed.sh $IP_ADDRESS
+
   # p2p config
   if [[ $NEED_P2P_CONFIG == "true" ]]; then
     ./p2p_config.sh $IP_ADDRESS
   fi
 fi
+
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
 # entangled start --pruning=nothing --evm.tracer=json $TRACE --log_level $LOGLEVEL --minimum-gas-prices=0.0001aENTGL --json-rpc.api eth,txpool,personal,net,debug,web3,miner --api.enable
