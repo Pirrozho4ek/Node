@@ -81,3 +81,4 @@ dependency-graph.png
 # OpenZeppelin contracts
 contracts/@openzeppelin/*
 keys/
+entangle.pem
