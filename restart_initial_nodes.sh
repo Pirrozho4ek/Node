@@ -7,7 +7,8 @@ CONTAINER=validator_node
 
 INITIAL_HOST="ubuntu@ec2-34-239-248-230.compute-1.amazonaws.com"
 INITIAL_IP=34.239.248.230
-INITIAL_SCRIPT="docker stop $VALIDATOR_CONTAINER_NAME; \
+INITIAL_SCRIPT="echo $VALIDATOR_CONTAINER_NAME; \
+        docker stop $VALIDATOR_CONTAINER_NAME; \
         cd $REPO_FOLDER_NAME; \
         git pull; \
         ./start_initial_container.sh entangle $INITIAL_IP; \
